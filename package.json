@@ -1,0 +1,27 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "mySql week 12 ",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WonderFogg/bamazon.git"
+  },
+  "keywords": [
+    "bamazon"
+  ],
+  "author": "wonderfogg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WonderFogg/bamazon/issues"
+  },
+  "homepage": "https://github.com/WonderFogg/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^3.3.0",
+    "mysql": "github:mysqljs/mysql",
+    "package": "^1.0.1"
+  }
+}
