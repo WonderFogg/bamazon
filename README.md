@@ -1,158 +1,136 @@
 # bamazon
-# LIRI Bot
 
-### Overview
+# Node.js & MySQL
 
-In this assignment, you will make LIRI. LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and Recognition Interface, LIRI is a _Language_ Interpretation and Recognition Interface. LIRI will be a command line node app that takes in parameters and gives you back data.
+## Overview
 
-### Before You Begin
+In this activity, you'll be creating an Amazon-like storefront with the MySQL skills you learned this week. The app will take in orders from customers and deplete stock from the store's inventory. As a bonus task, you can program your app to track product sales across your store's departments and then provide a summary of the highest-grossing departments in the store.
 
-1. LIRI will display your latest tweets. As we do not want to display your personal account, or its keys, please make an alias account and add a few tweets to it!
+Make sure you save and require the MySQL and Inquirer npm packages in your homework files--your app will need them for data input and storage.
 
-2. Make a new GitHub repository called liri-node-app and clone it to your computer.
+## Submission Guide
 
-3. To retrieve the data that will power this app, you'll need to send requests to the Twitter, Spotify and OMDB APIs. You'll find these Node packages crucial for your assignment.
+Make sure you use the normal GitHub. Because this is a CLI App, there will be no need to deploy it to Heroku. This time, though, you need to include screenshots, a gif, and/or a video showing us that you got the app working with no bugs. You can include these screenshots or a link to a video in a `README.md` file.
 
-   * [Twitter](https://www.npmjs.com/package/twitter)
+* Include screenshots (or a video) of typical user flows through your application (for the customer and if relevant the manager/supervisor). This includes views of the prompts and the responses after their selection (for the different selection options).
+
+* Include any other screenshots you deem necessary to help someone who has never been introduced to your application understand the purpose and function of it. This is how you will communicate to potential employers/other developers in the future what you built and why, and to show how it works. 
+
+* Because screenshots (and well-written READMEs) are extremely important in the context of GitHub, this will be part of the grading.
+
+If you haven't written a markdown file yet, [click here for a rundown](https://guides.github.com/features/mastering-markdown/), or just take a look at the raw file of these instructions.
+
+## Instructions
+
+### Challenge #1: Customer View (Minimum Requirement)
+
+1. Create a MySQL Database called `bamazon`.
+
+2. Then create a Table inside of that database called `products`.
+
+3. The products table should have each of the following columns:
+
+   * item_id (unique id for each product)
+
+   * product_name (Name of product)
+
+   * department_name
+
+   * price (cost to customer)
+
+   * stock_quantity (how much of the product is available in stores)
+
+4. Populate this database with around 10 different products. (i.e. Insert "mock" data rows into this database and table).
+
+5. Then create a Node application called `bamazonCustomer.js`. Running this application will first display all of the items available for sale. Include the ids, names, and prices of products for sale.
+
+6. The app should then prompt users with two messages.
+
+   * The first should ask them the ID of the product they would like to buy.
+   * The second message should ask how many units of the product they would like to buy.
+
+7. Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
+
+   * If not, the app should log a phrase like `Insufficient quantity!`, and then prevent the order from going through.
+
+8. However, if your store _does_ have enough of the product, you should fulfill the customer's order.
+   * This means updating the SQL database to reflect the remaining quantity.
+   * Once the update goes through, show the customer the total cost of their purchase.
+
+- - -
+
+* If this activity took you between 8-10 hours, then you've put enough time into this assignment. Feel free to stop here -- unless you want to take on the next challenge.
+
+- - -
+
+### Challenge #2: Manager View (Next Level)
+
+* Create a new Node application called `bamazonManager.js`. Running this application will:
+
+  * List a set of menu options:
+
+    * View Products for Sale
+    
+    * View Low Inventory
+    
+    * Add to Inventory
+    
+    * Add New Product
+
+  * If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
+
+  * If a manager selects `View Low Inventory`, then it should list all items with an inventory count lower than five.
+
+  * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
+
+  * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
+
+- - -
+
+* If you finished Challenge #2 and put in all the hours you were willing to spend on this activity, then rest easy! Otherwise continue to the next and final challenge.
+
+- - -
+
+### Challenge #3: Supervisor View (Final Level)
+
+1. Create a new MySQL table called `departments`. Your table should include the following columns:
+
+   * department_id
+
+   * department_name
+
+   * over_head_costs (A dummy number you set for each department)
+
+2. Modify the products table so that there's a product_sales column and modify the `bamazonCustomer.js` app so that this value is updated with each individual products total revenue from each sale.
+
+3. Modify your `bamazonCustomer.js` app so that when a customer purchases anything from the store, the price of the product multiplied by the quantity purchased is added to the product's product_sales column.
+
+   * Make sure your app still updates the inventory listed in the `products` column.
+
+4. Create another Node app called `bamazonSupervisor.js`. Running this application will list a set of menu options:
+
+   * View Product Sales by Department
    
-   * [Spotify](https://www.npmjs.com/package/node-spotify-api)
-   
-   * [Request](https://www.npmjs.com/package/request)
-     
-     * You'll use Request to grab data from the [OMDB API](http://www.omdbapi.com).
+   * Create New Department
 
-### Instructions
+5. When a supervisor selects `View Product Sales by Department`, the app should display a summarized table in their terminal/bash window. Use the table below as a guide.
 
-1. Initialize a `package.json` file at your project root. Be sure to save all of the npm packages you'll be using to this file. If you fail to initialize a `package.json` file and save your dependencies to it, it will be troublesome, and at times almost impossible for anyone else to run your code.
+| department_id | department_name | over_head_costs | product_sales | total_profit |
+| ------------- | --------------- | --------------- | ------------- | ------------ |
+| 01            | Electronics     | 10000           | 20000         | 10000        |
+| 02            | Clothing        | 60000           | 100000        | 40000        |
 
-2. Make a .gitignore file and add the following lines to it. This will tell git not to track these files, and thus they won't be committed to Github.
+6. The `total_profit` column should be calculated on the fly using the difference between `over_head_costs` and `product_sales`. `total_profit` should not be stored in any database. You should use a custom alias.
 
-```
-node_modules
-.DS_Store
-```
+7. If you can't get the table to display properly after a few hours, then feel free to go back and just add `total_profit` to the `departments` table.
 
-3. Make a JavaScript file named `keys.js`. **Do Not** add this file to the .gitignore. This would be a good thing to do in the real world, but it makes grading this assignment a challenge.
+   * Hint: You may need to look into aliases in MySQL.
 
-Inside keys.js your file will look like this:
+   * Hint: You may need to look into GROUP BYs.
 
-```JavaScript
-console.log('this is loaded');
+   * Hint: You may need to look into JOINS.
 
-var twitterKeys = {
-  consumer_key: '<input here>',
-  consumer_secret: '<input here>',
-  access_token_key: '<input here>',
-  access_token_secret: '<input here>',
-}
-
-module.exports = twitterKeys;
-```
-
-4. Get your Twitter API keys by following these steps:
-
-   * Step One: Visit <https://apps.twitter.com/app/new>
-   
-   * Step Two: Fill out the form with dummy data. Type `http://google.com` in the Website input. Don't fill out the Callback URL input. Then submit the form.
-   
-   * Step Three: On the next screen, click the Keys and Access Tokens tab to get your consume key and secret. 
-     
-     * Copy and paste them where the `<input here>` tags are inside your keys.js file.
-   
-   * Step Four: At the bottom of the page, click the `Create my access token` button to get your access token key and secret. 
-     
-     * Copy the access token key and secret displayed at the bottom of the next screen. Paste them where the `<input here>` tags are inside your keys.js file.
-
-5. Make a file called `random.txt`.
-
-   * Inside of `random.txt` put the following in with no extra characters or white space:
-     
-     * spotify-this-song,"I Want it That Way"
-
-6. Make a JavaScript file named `liri.js`.
-
-7. At the top of the `liri.js` file, write the code you need to grab the data from keys.js. Then store the keys in a variable.
-
-8. Make it so liri.js can take in one of the following commands:
-
-   * `my-tweets`
-
-   * `spotify-this-song`
-
-   * `movie-this`
-
-   * `do-what-it-says`
-
-### What Each Command Should Do
-
-1. `node liri.js my-tweets`
-
-   * This will show your last 20 tweets and when they were created at in your terminal/bash window.
-
-2. `node liri.js spotify-this-song '<song name here>'`
-
-   * This will show the following information about the song in your terminal/bash window
-     
-     * Artist(s)
-     
-     * The song's name
-     
-     * A preview link of the song from Spotify
-     
-     * The album that the song is from
-
-   * If no song is provided then your program will default to "The Sign" by Ace of Base.
-   
-   * You will utilize the [node-spotify-api](https://www.npmjs.com/package/node-spotify-api) package in order to retrieve song information from the Spotify API.
-   
-   * Like the Twitter API, the Spotify API requires you sign up as a developer to generate the necessary credentials. You can follow these steps in order to generate a **client id** and **client secret**:
-
-   * Step One: Visit <https://developer.spotify.com/my-applications/#!/>
-   
-   * Step Two: Either login to your existing Spotify account or create a new one (a free account is fine) and log in.
-
-   * Step Three: Once logged in, navigate to <https://developer.spotify.com/my-applications/#!/applications/create> to register a new application to be used with the Spotify API. You can fill in whatever you'd like for these fields. When finished, click the "complete" button.
-
-   * Step Four: On the next screen, scroll down to where you see your client id and client secret. Copy these values down somewhere, you'll need them to use the Spotify API and the [node-spotify-api package](https://www.npmjs.com/package/node-spotify-api). See the 
-
-3. `node liri.js movie-this '<movie name here>'`
-
-   * This will output the following information to your terminal/bash window:
-
-     ```
-       * Title of the movie.
-       * Year the movie came out.
-       * IMDB Rating of the movie.
-       * Rotten Tomatoes Rating of the movie.
-       * Country where the movie was produced.
-       * Language of the movie.
-       * Plot of the movie.
-       * Actors in the movie.
-     ```
-
-   * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-     
-     * If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>
-     
-     * It's on Netflix!
-   
-   * You'll use the request package to retrieve data from the OMDB API. Like all of the in-class activities, the OMDB API requires an API key. You may use `40e9cece`.
-
-4. `node liri.js do-what-it-says`
-   
-   * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
-     
-     * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
-     
-     * Feel free to change the text in that document to test out the feature for other commands.
-
-### BONUS
-
-* In addition to logging the data to your terminal/bash window, output the data to a .txt file called `log.txt`.
-
-* Make sure you append each command you run to the `log.txt` file. 
-
-* Do not overwrite your file each time you run a command.
+   * **HINT**: There may be an NPM package that can log the table to the console. What's is it? Good question :)
 
 - - -
 
@@ -171,4 +149,3 @@ If you have any questions about this project or the material we have covered, pl
 ## Copyright
 
 Coding Boot Camp (C) 2016. All Rights Reserved.
-
